@@ -16,6 +16,7 @@ from utils import progress_bar
 
 
 parser = argparse.ArgumentParser(description='PyTorch CIFAR10 Training')
+parser.add_argument('--model', default='SimpleDLA', help='AI model')
 parser.add_argument('--lr', default=0.1, type=float, help='learning rate')
 parser.add_argument('--resume', '-r', action='store_true',
                     help='resume from checkpoint')
@@ -54,7 +55,14 @@ classes = ('plane', 'car', 'bird', 'cat', 'deer',
 
 # Model
 print('==> Building model..')
-# net = VGG('VGG19')
+model = args.model
+print(f'AI Model: {model}')
+if model == 'VGG':
+    net = VGG('VGG19')
+if model == 'ResNet18':
+    net = ResNet18()
+else:
+    net = SimpleDLA()
 # net = ResNet18()
 # net = PreActResNet18()
 # net = GoogLeNet()
@@ -68,7 +76,7 @@ print('==> Building model..')
 # net = ShuffleNetV2(1)
 # net = EfficientNetB0()
 # net = RegNetX_200MF()
-net = SimpleDLA()
+# net = SimpleDLA()
 net = net.to(device)
 if device == 'cuda':
     net = torch.nn.DataParallel(net)
